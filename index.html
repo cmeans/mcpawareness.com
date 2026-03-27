@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Awareness — Your AI's memory, everywhere you go</title>
 <meta name="description" content="Your AI's memory shouldn't be locked to one app. Awareness is a portable knowledge store that follows you across Claude, Cursor, Claude Code, and any MCP-compatible tool. Self-hosted, private, yours.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Awareness — Portable memory for every AI you use">
+<meta property="og:description" content="A self-hosted knowledge store connected via MCP. Tell one AI, and every AI knows it. Health, projects, preferences — permanently, portably, privately.">
+<meta property="og:url" content="https://mcpawareness.com">
+<meta property="og:image" content="https://mcpawareness.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Awareness — Portable memory for every AI you use">
+<meta name="twitter:description" content="A self-hosted knowledge store connected via MCP. Tell one AI, and every AI knows it.">
+<meta name="twitter:image" content="https://mcpawareness.com/og-image.png">
+
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -251,6 +265,13 @@ nav .container {
   margin-bottom: 1rem;
 }
 
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
 .problem-text {
   max-width: 680px;
   font-size: 1.25rem;
@@ -264,38 +285,24 @@ nav .container {
   font-weight: 500;
 }
 
-.problem-scenario {
-  margin-top: 2.5rem;
-  padding: 2rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  max-width: 680px;
+.problem-costs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.problem-scenario p {
+.problem-cost {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   font-weight: 300;
 }
 
-.problem-scenario p:last-child {
-  margin-bottom: 0;
-}
-
-.problem-scenario .scenario-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--accent-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
-  display: block;
-}
-
-.problem-scenario em {
+.problem-cost em {
   color: var(--text-primary);
   font-style: normal;
   font-weight: 400;
@@ -376,36 +383,12 @@ nav .container {
 
 .briefing-line {
   opacity: 0;
-  animation: fadeIn 0.4s ease forwards;
+  transform: translateY(4px);
 }
 
-.briefing-line:nth-child(1) { animation-delay: 0.1s; }
-.briefing-line:nth-child(2) { animation-delay: 0.2s; }
-.briefing-line:nth-child(3) { animation-delay: 0.3s; }
-.briefing-line:nth-child(4) { animation-delay: 0.4s; }
-.briefing-line:nth-child(5) { animation-delay: 0.5s; }
-.briefing-line:nth-child(6) { animation-delay: 0.6s; }
-.briefing-line:nth-child(7) { animation-delay: 0.7s; }
-.briefing-line:nth-child(8) { animation-delay: 0.8s; }
-.briefing-line:nth-child(9) { animation-delay: 0.9s; }
-.briefing-line:nth-child(10) { animation-delay: 1.0s; }
-.briefing-line:nth-child(11) { animation-delay: 1.1s; }
-.briefing-line:nth-child(12) { animation-delay: 1.2s; }
-.briefing-line:nth-child(13) { animation-delay: 1.3s; }
-.briefing-line:nth-child(14) { animation-delay: 1.4s; }
-.briefing-line:nth-child(15) { animation-delay: 1.5s; }
-.briefing-line:nth-child(16) { animation-delay: 1.6s; }
-.briefing-line:nth-child(17) { animation-delay: 1.7s; }
-.briefing-line:nth-child(18) { animation-delay: 1.8s; }
-.briefing-line:nth-child(19) { animation-delay: 1.9s; }
-.briefing-line:nth-child(20) { animation-delay: 2.0s; }
-.briefing-line:nth-child(21) { animation-delay: 2.1s; }
-.briefing-line:nth-child(22) { animation-delay: 2.2s; }
-.briefing-line:nth-child(23) { animation-delay: 2.3s; }
-.briefing-line:nth-child(24) { animation-delay: 2.4s; }
-.briefing-line:nth-child(25) { animation-delay: 2.5s; }
-.briefing-line:nth-child(26) { animation-delay: 2.6s; }
-.briefing-line:nth-child(27) { animation-delay: 2.7s; }
+.briefing-line.visible {
+  animation: fadeIn 0.4s ease forwards;
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
@@ -473,6 +456,15 @@ nav .container {
   line-height: 1.7;
 }
 
+.step code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+  background: var(--bg-elevated);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
 /* -- Flow diagram -- */
 .flow {
   padding: 5rem 0;
@@ -535,13 +527,24 @@ nav .container {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
   transition: all 0.3s;
+}
+
+.flow-node-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+  fill: none;
 }
 
 .flow-node:hover .flow-node-icon {
   border-color: var(--accent);
   box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.flow-node:hover .flow-node-icon svg {
+  stroke: var(--accent);
 }
 
 .flow-node-label {
@@ -568,7 +571,12 @@ nav .container {
   height: 64px;
   background: var(--accent-glow);
   border-color: var(--accent);
-  font-size: 1.4rem;
+}
+
+.flow-center .flow-node-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--accent);
 }
 
 .flow-center .flow-node-label {
@@ -603,7 +611,7 @@ nav .container {
 
 .case-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
@@ -620,8 +628,23 @@ nav .container {
 }
 
 .case-icon {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  width: 40px;
+  height: 40px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.case-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
 }
 
 .case h3 {
@@ -637,43 +660,12 @@ nav .container {
   line-height: 1.7;
 }
 
-/* -- Estate section -- */
-.estate {
-  padding: 5rem 0;
-  border-top: 1px solid var(--border);
-}
-
-.estate-content {
-  max-width: 640px;
-}
-
-.estate-label {
+.case .case-example {
+  margin-top: 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 1rem;
-}
-
-.estate h2 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
-}
-
-.estate p {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-  font-weight: 300;
-}
-
-.estate .accent-text {
-  color: var(--accent);
-  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--accent-dim);
+  opacity: 0.8;
 }
 
 /* -- Vision -- */
@@ -712,7 +704,7 @@ nav .container {
 
 .vision-pillars {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
   margin-top: 2.5rem;
 }
@@ -859,12 +851,26 @@ footer a:hover {
   font-size: 0.85rem;
 }
 
+/* -- Scroll reveal -- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* -- Responsive -- */
 @media (max-width: 768px) {
   .nav-links { display: none; }
 
   .hero { padding: 7rem 0 4rem; }
   .hero h1 { font-size: 2.2rem; }
+
+  .problem-grid { grid-template-columns: 1fr; }
 
   .steps { grid-template-columns: 1fr; }
 
@@ -879,7 +885,7 @@ footer a:hover {
   }
 
   .case-grid { grid-template-columns: 1fr; }
-  .vision-pillars { grid-template-columns: 1fr; }
+  .vision-pillars { grid-template-columns: 1fr 1fr; }
 
   .terminal { font-size: 0.75rem; }
 
@@ -890,6 +896,7 @@ footer a:hover {
   .container { padding: 0 1.25rem; }
   .hero h1 { font-size: 1.9rem; }
   .hero-sub { font-size: 1.05rem; }
+  .vision-pillars { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -929,42 +936,40 @@ footer a:hover {
 </section>
 
 <!-- ===== PROBLEM ===== -->
-<section class="problem">
+<section class="problem reveal">
   <div class="container">
     <div class="problem-label">The problem</div>
-    <div class="problem-text">
-      <strong>Every AI platform keeps its own memory silo.</strong>
-      What you teach Claude doesn't exist in ChatGPT. Your desktop assistant's context
-      doesn't follow you to mobile. Switch platforms, and you start over.
-    </div>
-
-    <div class="problem-scenario">
-      <span class="scenario-label">What this costs you</span>
-      <p>
-        You mention a doctor's appointment to your AI on your phone during a commute.
-        Back at your desk, you ask Claude to help schedule a follow-up &mdash;
-        <em>it has no idea what you're talking about.</em>
-      </p>
-      <p>
-        You stored a medication interaction note last week. Today you're asking a different
-        AI about a new supplement &mdash; <em>it can't see what you already told the other one.</em>
-      </p>
-      <p>
-        Every conversation starts from zero. Your knowledge evaporates at the end of each chat.
-      </p>
+    <div class="problem-grid">
+      <div class="problem-text">
+        <strong>Every AI platform keeps its own memory silo.</strong>
+        What you teach Claude doesn't exist in ChatGPT. Your desktop context
+        doesn't follow you to mobile. Switch tools, start over.
+      </div>
+      <div class="problem-costs">
+        <div class="problem-cost">
+          You mention a doctor's appointment on your phone. Back at your desk,
+          Claude has <em>no idea what you're talking about.</em>
+        </div>
+        <div class="problem-cost">
+          You stored a medication note last week. Today a different AI asks about
+          a new supplement &mdash; <em>it can't see what you already told the other one.</em>
+        </div>
+        <div class="problem-cost">
+          Every conversation starts from zero. Your knowledge <em>evaporates at the end of each chat.</em>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== BRIEFING DEMO ===== -->
-<section class="demo" id="how-it-works">
+<section class="demo reveal" id="how-it-works">
   <div class="container">
     <div class="demo-label">How it works</div>
     <h2>Your AI reads a briefing. Every conversation.</h2>
     <p class="demo-sub">
-      A compact summary (~200 tokens) of what matters right now.
-      Intentions that fired, knowledge it needs, things that need attention &mdash;
-      or silence, confirming everything was checked.
+      A compact summary of what matters right now &mdash;
+      fired intentions, source health, active alerts, or silence confirming everything was checked.
     </p>
     <div class="terminal">
       <div class="terminal-header">
@@ -973,68 +978,65 @@ footer a:hover {
         <div class="terminal-dot"></div>
         <span class="terminal-title">get_briefing &mdash; Claude.ai</span>
       </div>
-      <div class="terminal-body">
+      <div class="terminal-body" id="briefing-demo">
         <div class="briefing-line">{</div>
         <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"attention_needed"</span>: <span class="t-bool-true">true</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"intentions"</span>: [</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;{</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"description"</span>: <span class="t-string">"Schedule dermatology follow-up"</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"state"</span>: <span class="t-string">"fired"</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"deliver_at"</span>: <span class="t-string">"2026-03-27"</span></div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;}</div>
-        <div class="briefing-line">&nbsp;&nbsp;],</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"knowledge_summary"</span>: {</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"total_entries"</span>: <span class="t-number">342</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"sources"</span>: <span class="t-number">26</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"recent_updates"</span>: <span class="t-number">8</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"sources"</span>: {</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"garmin"</span>: {</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"status"</span>: <span class="t-string">"warning"</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"headline"</span>: <span class="t-string">"Sleep score 72 (below 7-day avg 81)"</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"drill_down"</span>: <span class="t-string">"awareness://alerts/garmin"</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;},</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"nas"</span>: { <span class="t-key">"status"</span>: <span class="t-string">"ok"</span> },</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"homeassistant"</span>: { <span class="t-key">"status"</span>: <span class="t-string">"ok"</span> }</div>
         <div class="briefing-line">&nbsp;&nbsp;},</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"context"</span>: [</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"Sleep score 72 (below 7-day avg 81)"</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"CPAP SpO2 dip to 88% at 3:14am"</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"fired_intentions"</span>: [</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="t-key">"goal"</span>: <span class="t-string">"Schedule dermatology follow-up"</span>, <span class="t-key">"source"</span>: <span class="t-string">"personal"</span> }</div>
         <div class="briefing-line">&nbsp;&nbsp;],</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"alerts"</span>: [],</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"suppressed"</span>: <span class="t-number">0</span>,</div>
-        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"patterns_matched"</span>: <span class="t-number">0</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"active_alerts"</span>: <span class="t-number">1</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"pending_intentions"</span>: <span class="t-number">3</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"summary"</span>: <span class="t-string">"1 warning (garmin). 1 intention fired."</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"suggested_mention"</span>: <span class="t-string">"Garmin: sleep score 72. Reminder: schedule derm follow-up."</span></div>
         <div class="briefing-line">}</div>
         <div class="briefing-line">&nbsp;</div>
         <div class="briefing-line"><span class="t-comment">// Your AI knows you slept poorly, a reminder fired,</span></div>
-        <div class="briefing-line"><span class="t-comment">// and 342 knowledge entries are available to query.</span></div>
-        <div class="briefing-line"><span class="t-comment">// You didn't explain any of it.</span></div>
+        <div class="briefing-line"><span class="t-comment">// and your NAS and home are fine. You explained nothing.</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== STEPS ===== -->
-<section class="steps-section">
+<section class="steps-section reveal">
   <div class="container">
     <div class="steps-label">Get started</div>
-    <h2>Five minutes.</h2>
+    <h2>Five minutes to portable memory.</h2>
     <div class="steps">
       <div class="step">
         <div class="step-number">01</div>
-        <h3>Connect</h3>
+        <h3>Deploy</h3>
         <p>
-          Run a single command to start awareness. Add the URL to any
-          MCP-compatible AI tool &mdash; Claude, Cursor, Claude Code, VS Code,
-          or anything that speaks MCP.
+          <code>docker compose up -d</code> starts awareness with Postgres.
+          Or run the install script for a guided setup. No cloud account needed &mdash;
+          everything runs on your machine.
         </p>
       </div>
       <div class="step">
         <div class="step-number">02</div>
-        <h3>Use</h3>
+        <h3>Connect</h3>
         <p>
-          Your AIs read a compact briefing at conversation start. Store notes,
-          reminders, personal facts, and project context as you work.
-          Knowledge accumulates through conversation, not configuration.
+          Add one MCP server URL to Claude Desktop, Claude Code, Cursor, or
+          any MCP client. Every connected AI reads the same briefing
+          and writes to the same store.
         </p>
       </div>
       <div class="step">
         <div class="step-number">03</div>
-        <h3>Benefit</h3>
+        <h3>Accumulate</h3>
         <p>
-          Switch tools freely. Knowledge follows you. Reminders fire on schedule.
-          Every AI you use has the same context &mdash; no more starting over.
+          Say <code>"remember my dentist is Dr. Park"</code> in any conversation.
+          It's stored with tags, timestamps, and changelog. Every AI you use can
+          retrieve it from now on.
         </p>
       </div>
     </div>
@@ -1042,7 +1044,7 @@ footer a:hover {
 </section>
 
 <!-- ===== CROSS-PLATFORM FLOW ===== -->
-<section class="flow">
+<section class="flow reveal">
   <div class="container">
     <div class="flow-label">Cross-platform</div>
     <h2>One brain. Every AI.</h2>
@@ -1052,27 +1054,37 @@ footer a:hover {
     </p>
     <div class="flow-visual">
       <div class="flow-node">
-        <div class="flow-node-icon">&#x1f4f1;</div>
+        <div class="flow-node-icon">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
         <div class="flow-node-label">Mobile</div>
       </div>
       <div class="flow-arrow">&larr;&rarr;</div>
       <div class="flow-node">
-        <div class="flow-node-icon">&#x1f4ac;</div>
+        <div class="flow-node-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
         <div class="flow-node-label">Claude.ai</div>
       </div>
       <div class="flow-arrow">&larr;&rarr;</div>
       <div class="flow-node flow-center">
-        <div class="flow-node-icon">&#x1f9e0;</div>
+        <div class="flow-node-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0110 10 10 10 0 01-10 10A10 10 0 012 12 10 10 0 0112 2z" opacity="0.3"/><path d="M12 2v4m0 12v4m10-10h-4M6 12H2m15.07-5.07l-2.83 2.83M9.76 14.24l-2.83 2.83m0-10.14l2.83 2.83m4.48 4.48l2.83 2.83"/></svg>
+        </div>
         <div class="flow-node-label">AWARENESS</div>
       </div>
       <div class="flow-arrow">&larr;&rarr;</div>
       <div class="flow-node">
-        <div class="flow-node-icon">&#x2328;&#xfe0f;</div>
+        <div class="flow-node-icon">
+          <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
         <div class="flow-node-label">Claude Code</div>
       </div>
       <div class="flow-arrow">&larr;&rarr;</div>
       <div class="flow-node">
-        <div class="flow-node-icon">&#x2699;&#xfe0f;</div>
+        <div class="flow-node-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
         <div class="flow-node-label">Cursor /<br>VS Code</div>
       </div>
     </div>
@@ -1080,92 +1092,84 @@ footer a:hover {
 </section>
 
 <!-- ===== USE CASES ===== -->
-<section class="cases" id="cases">
+<section class="cases reveal" id="cases">
   <div class="container">
     <div class="cases-label">Use cases</div>
-    <h2>What you can build with it.</h2>
+    <h2>What people use it for.</h2>
     <div class="case-grid">
       <div class="case">
-        <div class="case-icon">&#x1f4cb;</div>
-        <h3>Personal knowledge management</h3>
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3>Health tracking</h3>
         <p>
-          Financial accounts, insurance details, medical info, family contacts &mdash;
-          tell your AI once, and it&rsquo;s stored with type, tags, and timestamps.
-          Any AI you use can retrieve it. No re-explaining, ever.
+          Sleep scores, CPAP metrics, medications, doctor's notes. Your AI correlates
+          last night's poor sleep with today's low energy without you explaining the connection.
         </p>
+        <div class="case-example">"My SpO2 dipped to 88% at 3am"</div>
       </div>
       <div class="case">
-        <div class="case-icon">&#x1f4ca;</div>
-        <h3>Health &amp; wellness</h3>
-        <p>
-          Sleep scores, CPAP metrics, HRV trends, exercise data &mdash; available to any
-          AI you talk to. Track patterns over time. Correlate sleep quality with
-          productivity without explaining your situation every conversation.
-        </p>
-      </div>
-      <div class="case">
-        <div class="case-icon">&#x1f5a5;&#xfe0f;</div>
-        <h3>Homelab monitoring</h3>
-        <p>
-          Your NAS, your Proxmox cluster, your Docker stack &mdash; awareness notices
-          when something changes and tells your AI before you ask. The briefing
-          surfaces what matters; silence confirms what's fine.
-        </p>
-      </div>
-      <div class="case">
-        <div class="case-icon">&#x1f504;</div>
-        <h3>Cross-platform development</h3>
-        <p>
-          Start a feature in Claude Code, discuss the design in Claude.ai,
-          review in Cursor. Decisions, project status, and context follow you
-          across every platform without re-explaining.
-        </p>
-      </div>
-      <div class="case">
-        <div class="case-icon">&#x23f0;</div>
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
         <h3>Intentions &amp; reminders</h3>
         <p>
-          &ldquo;Remind me to call the dentist next week.&rdquo; Awareness creates an
-          intention that fires automatically at the right time. Your AI surfaces it
-          in your next conversation &mdash; on any platform.
+          "Remind me to call the dentist next Tuesday." The intention fires automatically
+          in your next conversation after Tuesday &mdash; on any platform, any device.
         </p>
+        <div class="case-example">remind("Call dentist", deliver_at="2026-04-01")</div>
       </div>
       <div class="case">
-        <div class="case-icon">&#x1f50d;</div>
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <h3>Cross-platform dev</h3>
+        <p>
+          Start a feature in Claude Code, discuss the design in Claude.ai,
+          review in Cursor. Decisions and project context follow you
+          without re-explaining.
+        </p>
+        <div class="case-example">get_knowledge(tags=["mcp-awareness", "status"])</div>
+      </div>
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+        </div>
+        <h3>Homelab monitoring</h3>
+        <p>
+          NAS, Proxmox, Docker &mdash; edge daemons report status and awareness
+          tells your AI before you ask. Silence confirms things are fine.
+        </p>
+        <div class="case-example">sources: { "nas": { "status": "ok" } }</div>
+      </div>
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Personal knowledge base</h3>
+        <p>
+          Insurance policy numbers, family contacts, financial accounts. Tell your AI once
+          and it's stored with type, tags, and timestamps. No re-explaining, ever.
+        </p>
+        <div class="case-example">remember("HSA account: 4821", tags=["finance"])</div>
+      </div>
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        </div>
         <h3>Decision trail</h3>
         <p>
-          Every entry is timestamped and changelog-tracked. Why did you pick that
-          architecture? What was the reasoning behind that financial decision?
-          The context is preserved at the moment you made the choice.
+          Every entry is timestamped and changelog-tracked. Why that architecture?
+          Why that financial choice? The reasoning is preserved at the moment you decided.
         </p>
+        <div class="case-example">changelog: [{ changed: "2026-03-15", ... }]</div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== ESTATE ===== -->
-<section class="estate">
-  <div class="container">
-    <div class="estate-content">
-      <div class="estate-label">Knowledge that outlives you</div>
-      <h2>A living estate document.</h2>
-      <p>
-        Over time, your awareness store becomes something profound &mdash;
-        financial accounts, insurance details, medical info, system access,
-        family contacts. Not because you sat down to write a manual, but because
-        you asked your AI to <span class="accent-text">remember important details
-        as you mentioned them.</span>
-      </p>
-      <p>
-        It accumulated as a side effect of living your life with an AI.
-        If you weren't here tomorrow, someone could find what they need.
-      </p>
     </div>
   </div>
 </section>
 
 <!-- ===== VISION ===== -->
-<section class="vision" id="vision">
+<section class="vision reveal" id="vision">
   <div class="container">
     <div class="vision-content">
       <div class="vision-label">Vision</div>
@@ -1176,34 +1180,36 @@ footer a:hover {
         An attention firewall, not another notification source.
       </p>
       <p>
-        Knowledge becomes ambient. It accumulates through daily use,
-        not documentation. A house that remembers when the furnace was serviced.
-        A decision trail that preserves the reasoning at the moment you made the choice.
+        Knowledge becomes ambient. It accumulates through daily use, not documentation sessions.
+        Over time, your store becomes something profound &mdash; a living record of financial accounts,
+        medical details, system configurations, family contacts. Not because you sat down to catalog
+        your life, but because you asked your AI to
+        <span style="color: var(--accent); font-weight: 400;">remember things as you mentioned them.</span>
       </p>
     </div>
     <div class="vision-pillars">
       <div class="vision-pillar">
         <h4>Personal</h4>
-        <p>One person's knowledge, portable across every AI they use. Working today.</p>
+        <p>One person's knowledge, portable across every AI. Working today.</p>
       </div>
       <div class="vision-pillar">
         <h4>Family</h4>
-        <p>A shared household store. Who&rsquo;s picking up the kids? When was the furnace serviced?</p>
+        <p>Shared household store. Who's picking up the kids? When was the furnace serviced?</p>
       </div>
       <div class="vision-pillar">
         <h4>Team</h4>
-        <p>Project knowledge that accumulates through work, not meetings and wikis.</p>
+        <p>Project knowledge that accumulates through work, not meetings.</p>
       </div>
       <div class="vision-pillar">
         <h4>Community</h4>
-        <p>Institutional memory for organizations with zero software budget.</p>
+        <p>Institutional memory for orgs with zero software budget.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== ORIGIN ===== -->
-<section class="origin">
+<section class="origin reveal">
   <div class="container">
     <div class="origin-content">
       <div class="origin-label">Origin</div>
@@ -1264,6 +1270,31 @@ footer a:hover {
     </div>
   </div>
 </footer>
+
+<script>
+// Scroll-triggered reveal for sections
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+
+      // Trigger briefing line animation when demo section enters
+      if (entry.target.classList.contains('demo')) {
+        const lines = entry.target.querySelectorAll('.briefing-line');
+        lines.forEach((line, i) => {
+          line.style.animationDelay = (i * 0.1) + 's';
+          line.classList.add('visible');
+        });
+      }
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+});
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>

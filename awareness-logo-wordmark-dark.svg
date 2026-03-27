@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186 32" height="32" width="186">
+  <!-- Radar/signal icon -->
+  <g transform="translate(14, 16)">
+    <!-- Outer arc -->
+    <path d="M -8 4 A 10 10 0 0 1 -8 -4" fill="none" stroke="#85B7EB" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+    <!-- Middle arc -->
+    <path d="M -5.5 3 A 7 7 0 0 1 -5.5 -3" fill="none" stroke="#85B7EB" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <!-- Inner arc -->
+    <path d="M -3 2 A 4 4 0 0 1 -3 -2" fill="none" stroke="#85B7EB" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="2" fill="#85B7EB"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="28" y="21.5" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="300" letter-spacing="0.5" fill="#85B7EB">awareness</text>
+</svg>
