@@ -685,11 +685,16 @@ nav .container {
 }
 
 .case .case-example {
-  margin-top: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--accent-dim);
-  opacity: 0.8;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.case .case-you {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 300;
 }
 
 /* -- Vision -- */
@@ -1148,7 +1153,9 @@ footer a:hover {
           Sleep scores, CPAP metrics, medications, doctor's notes. Your AI correlates
           last night's poor sleep with today's low energy without you explaining the connection.
         </p>
-        <div class="case-example">"My SpO2 dipped to 88% at 3am"</div>
+        <div class="case-example">
+          <span class="case-you">"My SpO2 dipped to 88% at 3am &mdash; remember that."</span>
+        </div>
       </div>
       <div class="case">
         <div class="case-icon">
@@ -1159,7 +1166,9 @@ footer a:hover {
           "Remind me to call the dentist next Tuesday." The intention fires automatically
           in your next conversation after Tuesday &mdash; on any platform, any device.
         </p>
-        <div class="case-example">remind("Call dentist", deliver_at="2026-04-01")</div>
+        <div class="case-example">
+          <span class="case-you">"Remind me to call the dentist next Tuesday."</span>
+        </div>
       </div>
       <div class="case">
         <div class="case-icon">
@@ -1171,7 +1180,9 @@ footer a:hover {
           review in Cursor. Decisions and project context follow you
           without re-explaining.
         </p>
-        <div class="case-example">get_knowledge(tags=["mcp-awareness", "status"])</div>
+        <div class="case-example">
+          <span class="case-you">"What's the status of the awareness project?"</span>
+        </div>
       </div>
       <div class="case">
         <div class="case-icon">
@@ -1182,7 +1193,9 @@ footer a:hover {
           NAS, Proxmox, Docker &mdash; edge daemons report status and awareness
           tells your AI before you ask. Silence confirms things are fine.
         </p>
-        <div class="case-example">sources: { "nas": { "status": "ok" } }</div>
+        <div class="case-example">
+          <span class="case-you">"Is anything wrong with my servers?"</span>
+        </div>
       </div>
       <div class="case">
         <div class="case-icon">
@@ -1193,7 +1206,9 @@ footer a:hover {
           Insurance policy numbers, family contacts, financial accounts. Tell your AI once
           and it's stored with type, tags, and timestamps. No re-explaining, ever.
         </p>
-        <div class="case-example">remember("HSA account: 4821", tags=["finance"])</div>
+        <div class="case-example">
+          <span class="case-you">"My HSA account number is 4821 &mdash; save that."</span>
+        </div>
       </div>
       <div class="case">
         <div class="case-icon">
@@ -1204,7 +1219,9 @@ footer a:hover {
           Every entry is timestamped and changelog-tracked. Why that architecture?
           Why that financial choice? The reasoning is preserved at the moment you decided.
         </p>
-        <div class="case-example">changelog: [{ changed: "2026-03-15", ... }]</div>
+        <div class="case-example">
+          <span class="case-you">"Why did we pick Postgres over SQLite last month?"</span>
+        </div>
       </div>
     </div>
   </div>
