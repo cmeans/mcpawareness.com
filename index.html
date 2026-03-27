@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awareness — Your AI's memory, everywhere you go</title>
+<meta name="description" content="Your AI's memory shouldn't be locked to one app. Awareness is a portable knowledge store that follows you across Claude, Cursor, Claude Code, and any MCP-compatible tool. Self-hosted, private, yours.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0c10;
+  --bg-surface: #12151c;
+  --bg-elevated: #1a1e28;
+  --bg-hover: #222838;
+  --border: #2a3040;
+  --border-bright: #3a4560;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8892a8;
+  --text-muted: #5a6478;
+  --accent: #85B7EB;
+  --accent-dim: #6AAAE6;
+  --accent-light: #B5D4F4;
+  --accent-glow: rgba(133, 183, 235, 0.12);
+  --accent-glow-strong: rgba(133, 183, 235, 0.25);
+  --warn: #fbbf24;
+  --critical: #f87171;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* -- Grain overlay -- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* -- Layout -- */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* -- Nav -- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1rem 0;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  height: 28px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--text-primary); }
+
+.nav-cta {
+  background: var(--accent);
+  color: var(--bg-deep) !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  transition: opacity 0.2s;
+}
+
+.nav-cta:hover { opacity: 0.85; }
+
+/* -- Hero -- */
+.hero {
+  padding: 10rem 0 6rem;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+}
+
+.hero-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-glow-strong); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 6px transparent; }
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent-dim) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: var(--font-display);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--accent-glow-strong);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-bright);
+}
+
+/* -- Problem section -- */
+.problem {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.problem-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.problem-text {
+  max-width: 680px;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.problem-text strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.problem-scenario {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  max-width: 680px;
+}
+
+.problem-scenario p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.problem-scenario p:last-child {
+  margin-bottom: 0;
+}
+
+.problem-scenario .scenario-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.problem-scenario em {
+  color: var(--text-primary);
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* -- Briefing demo -- */
+.demo {
+  padding: 5rem 0;
+}
+
+.demo-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.demo h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.demo-sub {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 3rem;
+  max-width: 520px;
+  font-weight: 300;
+}
+
+.terminal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  max-width: 720px;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-bright);
+}
+
+.terminal-title {
+  margin-left: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.terminal-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.t-comment { color: var(--text-muted); }
+.t-key { color: var(--accent); }
+.t-string { color: #fbbf24; }
+.t-bool-true { color: var(--accent); }
+.t-bool-false { color: var(--text-muted); }
+.t-number { color: #c4b5fd; }
+
+.briefing-line {
+  opacity: 0;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.briefing-line:nth-child(1) { animation-delay: 0.1s; }
+.briefing-line:nth-child(2) { animation-delay: 0.2s; }
+.briefing-line:nth-child(3) { animation-delay: 0.3s; }
+.briefing-line:nth-child(4) { animation-delay: 0.4s; }
+.briefing-line:nth-child(5) { animation-delay: 0.5s; }
+.briefing-line:nth-child(6) { animation-delay: 0.6s; }
+.briefing-line:nth-child(7) { animation-delay: 0.7s; }
+.briefing-line:nth-child(8) { animation-delay: 0.8s; }
+.briefing-line:nth-child(9) { animation-delay: 0.9s; }
+.briefing-line:nth-child(10) { animation-delay: 1.0s; }
+.briefing-line:nth-child(11) { animation-delay: 1.1s; }
+.briefing-line:nth-child(12) { animation-delay: 1.2s; }
+.briefing-line:nth-child(13) { animation-delay: 1.3s; }
+.briefing-line:nth-child(14) { animation-delay: 1.4s; }
+.briefing-line:nth-child(15) { animation-delay: 1.5s; }
+.briefing-line:nth-child(16) { animation-delay: 1.6s; }
+.briefing-line:nth-child(17) { animation-delay: 1.7s; }
+.briefing-line:nth-child(18) { animation-delay: 1.8s; }
+.briefing-line:nth-child(19) { animation-delay: 1.9s; }
+.briefing-line:nth-child(20) { animation-delay: 2.0s; }
+.briefing-line:nth-child(21) { animation-delay: 2.1s; }
+.briefing-line:nth-child(22) { animation-delay: 2.2s; }
+.briefing-line:nth-child(23) { animation-delay: 2.3s; }
+.briefing-line:nth-child(24) { animation-delay: 2.4s; }
+.briefing-line:nth-child(25) { animation-delay: 2.5s; }
+.briefing-line:nth-child(26) { animation-delay: 2.6s; }
+.briefing-line:nth-child(27) { animation-delay: 2.7s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -- Steps -- */
+.steps-section {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.steps-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.steps-section h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 3rem;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.step {
+  padding: 2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.3s;
+}
+
+.step:hover {
+  border-color: var(--border-bright);
+}
+
+.step-number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.step h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.step p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* -- Flow diagram -- */
+.flow {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.flow-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.flow h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.flow-sub {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 3rem;
+  max-width: 560px;
+  font-weight: 300;
+}
+
+.flow-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 2.5rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  z-index: 1;
+}
+
+.flow-node-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-bright);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.flow-node:hover .flow-node-icon {
+  border-color: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.flow-node-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  opacity: 0.5;
+  font-family: var(--font-mono);
+  z-index: 1;
+}
+
+.flow-center {
+  position: relative;
+}
+
+.flow-center .flow-node-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  font-size: 1.4rem;
+}
+
+.flow-center .flow-node-label {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+/* -- Use cases -- */
+.cases {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.cases-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.cases h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 3rem;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.case {
+  padding: 2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.3s;
+}
+
+.case:hover {
+  border-color: var(--border-bright);
+}
+
+.case-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.case h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.case p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* -- Estate section -- */
+.estate {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.estate-content {
+  max-width: 640px;
+}
+
+.estate-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.estate h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.estate p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.estate .accent-text {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* -- Vision -- */
+.vision {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.vision-content {
+  max-width: 640px;
+}
+
+.vision-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.vision h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.vision p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.vision-pillars {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.vision-pillar {
+  padding: 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.vision-pillar h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.vision-pillar p {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* -- Origin -- */
+.origin {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.origin-content {
+  max-width: 640px;
+}
+
+.origin-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.origin h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.origin p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.origin a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-glow);
+  transition: border-color 0.2s;
+}
+
+.origin a:hover {
+  border-color: var(--accent);
+}
+
+/* -- CTA -- */
+.cta {
+  padding: 6rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.cta > .container > p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.cta-code {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 1rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--accent);
+  cursor: text;
+  user-select: all;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.cta-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* -- Footer -- */
+footer {
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.footer-links a {
+  font-size: 0.85rem;
+}
+
+/* -- Responsive -- */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+
+  .hero { padding: 7rem 0 4rem; }
+  .hero h1 { font-size: 2.2rem; }
+
+  .steps { grid-template-columns: 1fr; }
+
+  .flow-visual {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .case-grid { grid-template-columns: 1fr; }
+  .vision-pillars { grid-template-columns: 1fr; }
+
+  .terminal { font-size: 0.75rem; }
+
+  .cta-code { font-size: 0.78rem; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1.25rem; }
+  .hero h1 { font-size: 1.9rem; }
+  .hero-sub { font-size: 1.05rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="nav-logo"><img src="awareness-logo-wordmark-dark.svg" alt="awareness" height="28"></a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#cases">Use cases</a></li>
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="https://github.com/cmeans/mcp-awareness" target="_blank">GitHub</a></li>
+      <li><a href="#quickstart" class="nav-cta">Get started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Open source &middot; Self-hosted &middot; MCP
+    </div>
+    <h1>Your AI's memory shouldn't be locked to one app. It should <span class="highlight">follow you everywhere.</span></h1>
+    <p class="hero-sub">
+      Awareness is a portable knowledge store for your life. Tell one AI about your health,
+      your projects, your preferences &mdash; and every AI you use knows it.
+      Permanently, portably, privately.
+    </p>
+    <div class="hero-actions">
+      <a href="#quickstart" class="btn btn-primary">Get started in 5 minutes &rarr;</a>
+      <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEM ===== -->
+<section class="problem">
+  <div class="container">
+    <div class="problem-label">The problem</div>
+    <div class="problem-text">
+      <strong>Every AI platform keeps its own memory silo.</strong>
+      What you teach Claude doesn't exist in ChatGPT. Your desktop assistant's context
+      doesn't follow you to mobile. Switch platforms, and you start over.
+    </div>
+
+    <div class="problem-scenario">
+      <span class="scenario-label">What this costs you</span>
+      <p>
+        You mention a doctor's appointment to your AI on your phone during a commute.
+        Back at your desk, you ask Claude to help schedule a follow-up &mdash;
+        <em>it has no idea what you're talking about.</em>
+      </p>
+      <p>
+        You stored a medication interaction note last week. Today you're asking a different
+        AI about a new supplement &mdash; <em>it can't see what you already told the other one.</em>
+      </p>
+      <p>
+        Every conversation starts from zero. Your knowledge evaporates at the end of each chat.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BRIEFING DEMO ===== -->
+<section class="demo" id="how-it-works">
+  <div class="container">
+    <div class="demo-label">How it works</div>
+    <h2>Your AI reads a briefing. Every conversation.</h2>
+    <p class="demo-sub">
+      A compact summary (~200 tokens) of what matters right now.
+      Intentions that fired, knowledge it needs, things that need attention &mdash;
+      or silence, confirming everything was checked.
+    </p>
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="terminal-dot"></div>
+        <div class="terminal-dot"></div>
+        <div class="terminal-dot"></div>
+        <span class="terminal-title">get_briefing &mdash; Claude.ai</span>
+      </div>
+      <div class="terminal-body">
+        <div class="briefing-line">{</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"attention_needed"</span>: <span class="t-bool-true">true</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"intentions"</span>: [</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;{</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"description"</span>: <span class="t-string">"Schedule dermatology follow-up"</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"state"</span>: <span class="t-string">"fired"</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"deliver_at"</span>: <span class="t-string">"2026-03-27"</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+        <div class="briefing-line">&nbsp;&nbsp;],</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"knowledge_summary"</span>: {</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"total_entries"</span>: <span class="t-number">342</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"sources"</span>: <span class="t-number">26</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-key">"recent_updates"</span>: <span class="t-number">8</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;},</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"context"</span>: [</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"Sleep score 72 (below 7-day avg 81)"</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"CPAP SpO2 dip to 88% at 3:14am"</span></div>
+        <div class="briefing-line">&nbsp;&nbsp;],</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"alerts"</span>: [],</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"suppressed"</span>: <span class="t-number">0</span>,</div>
+        <div class="briefing-line">&nbsp;&nbsp;<span class="t-key">"patterns_matched"</span>: <span class="t-number">0</span></div>
+        <div class="briefing-line">}</div>
+        <div class="briefing-line">&nbsp;</div>
+        <div class="briefing-line"><span class="t-comment">// Your AI knows you slept poorly, a reminder fired,</span></div>
+        <div class="briefing-line"><span class="t-comment">// and 342 knowledge entries are available to query.</span></div>
+        <div class="briefing-line"><span class="t-comment">// You didn't explain any of it.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STEPS ===== -->
+<section class="steps-section">
+  <div class="container">
+    <div class="steps-label">Get started</div>
+    <h2>Five minutes.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Connect</h3>
+        <p>
+          Run a single command to start awareness. Add the URL to any
+          MCP-compatible AI tool &mdash; Claude, Cursor, Claude Code, VS Code,
+          or anything that speaks MCP.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Use</h3>
+        <p>
+          Your AIs read a compact briefing at conversation start. Store notes,
+          reminders, personal facts, and project context as you work.
+          Knowledge accumulates through conversation, not configuration.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Benefit</h3>
+        <p>
+          Switch tools freely. Knowledge follows you. Reminders fire on schedule.
+          Every AI you use has the same context &mdash; no more starting over.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CROSS-PLATFORM FLOW ===== -->
+<section class="flow">
+  <div class="container">
+    <div class="flow-label">Cross-platform</div>
+    <h2>One brain. Every AI.</h2>
+    <p class="flow-sub">
+      Tell your AI about a medication on your phone. Ask about drug interactions on your laptop.
+      Awareness is the portable layer that makes all your AI tools feel like one system.
+    </p>
+    <div class="flow-visual">
+      <div class="flow-node">
+        <div class="flow-node-icon">&#x1f4f1;</div>
+        <div class="flow-node-label">Mobile</div>
+      </div>
+      <div class="flow-arrow">&larr;&rarr;</div>
+      <div class="flow-node">
+        <div class="flow-node-icon">&#x1f4ac;</div>
+        <div class="flow-node-label">Claude.ai</div>
+      </div>
+      <div class="flow-arrow">&larr;&rarr;</div>
+      <div class="flow-node flow-center">
+        <div class="flow-node-icon">&#x1f9e0;</div>
+        <div class="flow-node-label">AWARENESS</div>
+      </div>
+      <div class="flow-arrow">&larr;&rarr;</div>
+      <div class="flow-node">
+        <div class="flow-node-icon">&#x2328;&#xfe0f;</div>
+        <div class="flow-node-label">Claude Code</div>
+      </div>
+      <div class="flow-arrow">&larr;&rarr;</div>
+      <div class="flow-node">
+        <div class="flow-node-icon">&#x2699;&#xfe0f;</div>
+        <div class="flow-node-label">Cursor /<br>VS Code</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USE CASES ===== -->
+<section class="cases" id="cases">
+  <div class="container">
+    <div class="cases-label">Use cases</div>
+    <h2>What you can build with it.</h2>
+    <div class="case-grid">
+      <div class="case">
+        <div class="case-icon">&#x1f4cb;</div>
+        <h3>Personal knowledge management</h3>
+        <p>
+          Financial accounts, insurance details, medical info, family contacts &mdash;
+          tell your AI once, and it&rsquo;s stored with type, tags, and timestamps.
+          Any AI you use can retrieve it. No re-explaining, ever.
+        </p>
+      </div>
+      <div class="case">
+        <div class="case-icon">&#x1f4ca;</div>
+        <h3>Health &amp; wellness</h3>
+        <p>
+          Sleep scores, CPAP metrics, HRV trends, exercise data &mdash; available to any
+          AI you talk to. Track patterns over time. Correlate sleep quality with
+          productivity without explaining your situation every conversation.
+        </p>
+      </div>
+      <div class="case">
+        <div class="case-icon">&#x1f5a5;&#xfe0f;</div>
+        <h3>Homelab monitoring</h3>
+        <p>
+          Your NAS, your Proxmox cluster, your Docker stack &mdash; awareness notices
+          when something changes and tells your AI before you ask. The briefing
+          surfaces what matters; silence confirms what's fine.
+        </p>
+      </div>
+      <div class="case">
+        <div class="case-icon">&#x1f504;</div>
+        <h3>Cross-platform development</h3>
+        <p>
+          Start a feature in Claude Code, discuss the design in Claude.ai,
+          review in Cursor. Decisions, project status, and context follow you
+          across every platform without re-explaining.
+        </p>
+      </div>
+      <div class="case">
+        <div class="case-icon">&#x23f0;</div>
+        <h3>Intentions &amp; reminders</h3>
+        <p>
+          &ldquo;Remind me to call the dentist next week.&rdquo; Awareness creates an
+          intention that fires automatically at the right time. Your AI surfaces it
+          in your next conversation &mdash; on any platform.
+        </p>
+      </div>
+      <div class="case">
+        <div class="case-icon">&#x1f50d;</div>
+        <h3>Decision trail</h3>
+        <p>
+          Every entry is timestamped and changelog-tracked. Why did you pick that
+          architecture? What was the reasoning behind that financial decision?
+          The context is preserved at the moment you made the choice.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ESTATE ===== -->
+<section class="estate">
+  <div class="container">
+    <div class="estate-content">
+      <div class="estate-label">Knowledge that outlives you</div>
+      <h2>A living estate document.</h2>
+      <p>
+        Over time, your awareness store becomes something profound &mdash;
+        financial accounts, insurance details, medical info, system access,
+        family contacts. Not because you sat down to write a manual, but because
+        you asked your AI to <span class="accent-text">remember important details
+        as you mentioned them.</span>
+      </p>
+      <p>
+        It accumulated as a side effect of living your life with an AI.
+        If you weren't here tomorrow, someone could find what they need.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VISION ===== -->
+<section class="vision" id="vision">
+  <div class="container">
+    <div class="vision-content">
+      <div class="vision-label">Vision</div>
+      <h2>The product is silence.</h2>
+      <p>
+        The most important briefing is <code style="font-family: var(--font-mono); color: var(--accent); font-size: 0.95em;">attention_needed: false</code> &mdash;
+        confirmation that everything was checked and nothing needs you.
+        An attention firewall, not another notification source.
+      </p>
+      <p>
+        Knowledge becomes ambient. It accumulates through daily use,
+        not documentation. A house that remembers when the furnace was serviced.
+        A decision trail that preserves the reasoning at the moment you made the choice.
+      </p>
+    </div>
+    <div class="vision-pillars">
+      <div class="vision-pillar">
+        <h4>Personal</h4>
+        <p>One person's knowledge, portable across every AI they use. Working today.</p>
+      </div>
+      <div class="vision-pillar">
+        <h4>Family</h4>
+        <p>A shared household store. Who&rsquo;s picking up the kids? When was the furnace serviced?</p>
+      </div>
+      <div class="vision-pillar">
+        <h4>Team</h4>
+        <p>Project knowledge that accumulates through work, not meetings and wikis.</p>
+      </div>
+      <div class="vision-pillar">
+        <h4>Community</h4>
+        <p>Institutional memory for organizations with zero software budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ORIGIN ===== -->
+<section class="origin">
+  <div class="container">
+    <div class="origin-content">
+      <div class="origin-label">Origin</div>
+      <h2>Born from a single memory instruction.</h2>
+      <p>
+        What started as a homelab monitoring experiment turned into a portable
+        knowledge layer for your entire life. A single line in Claude's memory
+        &mdash; <em>&ldquo;check the NAS health on each conversation&rdquo;</em> &mdash;
+        worked surprisingly well. The AI applied contextual judgment, learned
+        what was normal, and surfaced what wasn't.
+      </p>
+      <p>
+        But it had obvious limits. Knowledge was locked to one platform.
+        It only worked with one system. Diagnostics weren't captured at
+        detection time.
+      </p>
+      <p>
+        Awareness is the generalization of that experiment &mdash; multi-source,
+        multi-platform, portable knowledge that any AI agent can read and write.
+      </p>
+      <p>
+        <a href="https://www.linkedin.com/posts/cmeans_mcp-modelcontextprotocol-platformengineering-activity-7440439710315098112-Fstj" target="_blank">Read the full origin story &rarr;</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="quickstart">
+  <div class="container">
+    <h2>Try it in five minutes.</h2>
+    <p>One command. No account needed. Your data stays on your machine.</p>
+    <div class="cta-code" title="Click to select">
+      curl -sSL https://raw.githubusercontent.com/cmeans/mcp-awareness/main/install-demo.sh | bash
+    </div>
+    <div class="cta-links">
+      <a href="https://github.com/cmeans/mcp-awareness#quick-start" class="btn btn-primary" target="_blank">
+        Quickstart guide &rarr;
+      </a>
+      <a href="https://github.com/cmeans/mcp-awareness" class="btn btn-secondary" target="_blank">
+        View on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>
+      Built by <a href="https://github.com/cmeans" target="_blank">Chris Means</a> with
+      <a href="https://claude.ai" target="_blank">Claude</a>.
+      Apache 2.0.
+    </p>
+    <div class="footer-links">
+      <a href="https://github.com/cmeans/mcp-awareness" target="_blank">GitHub</a>
+      <a href="https://github.com/cmeans/mcp-awareness/blob/main/docs/deployment-guide.md" target="_blank">Docs</a>
+      <a href="https://www.linkedin.com/in/cmeans" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
