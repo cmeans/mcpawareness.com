@@ -642,6 +642,19 @@ nav .container {
   margin-bottom: 3rem;
 }
 
+.case-row-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.case-row-label + .case-grid {
+  margin-bottom: 2.5rem;
+}
+
 .case-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1155,6 +1168,53 @@ footer a:hover {
   <div class="container">
     <div class="cases-label">Use cases</div>
     <h2>What you can do with it.</h2>
+    <!-- Row 1: Building & shipping -->
+    <p class="case-row-label">For building</p>
+    <div class="case-grid">
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <h3>Cross-platform dev</h3>
+        <p>
+          Start a feature in Claude Code, discuss the design in Claude.ai,
+          review in Cursor. Decisions and project context follow you
+          without re-explaining.
+        </p>
+        <div class="case-example">
+          <span class="case-you">"What's the status of the awareness project?"</span>
+        </div>
+      </div>
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+        </div>
+        <h3>Homelab monitoring</h3>
+        <p>
+          NAS, Proxmox, Docker &mdash; edge daemons report status and awareness
+          tells your AI before you ask. Silence confirms things are fine.
+        </p>
+        <div class="case-example">
+          <span class="case-you">"Is anything wrong with my servers?"</span>
+        </div>
+      </div>
+      <div class="case">
+        <div class="case-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        </div>
+        <h3>Decision trail</h3>
+        <p>
+          Every entry is timestamped and changelog-tracked. Why that architecture?
+          Why that financial choice? The reasoning is preserved at the moment you decided.
+        </p>
+        <div class="case-example">
+          <span class="case-you">"Why did we pick Postgres over SQLite last month?"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Daily life -->
+    <p class="case-row-label">For living</p>
     <div class="case-grid">
       <div class="case">
         <div class="case-icon">
@@ -1185,33 +1245,6 @@ footer a:hover {
       </div>
       <div class="case">
         <div class="case-icon">
-          <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-        </div>
-        <h3>Cross-platform dev</h3>
-        <p>
-          Start a feature in Claude Code, discuss the design in Claude.ai,
-          review in Cursor. Decisions and project context follow you
-          without re-explaining.
-        </p>
-        <div class="case-example">
-          <span class="case-you">"What's the status of the awareness project?"</span>
-        </div>
-      </div>
-      <div class="case">
-        <div class="case-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
-        </div>
-        <h3>Homelab monitoring</h3>
-        <p>
-          NAS, Proxmox, Docker &mdash; edge daemons report status and awareness
-          tells your AI before you ask. Silence confirms things are fine.
-        </p>
-        <div class="case-example">
-          <span class="case-you">"Is anything wrong with my servers?"</span>
-        </div>
-      </div>
-      <div class="case">
-        <div class="case-icon">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <h3>Personal knowledge base</h3>
@@ -1221,19 +1254,6 @@ footer a:hover {
         </p>
         <div class="case-example">
           <span class="case-you">"My HSA account number is 4821 &mdash; save that."</span>
-        </div>
-      </div>
-      <div class="case">
-        <div class="case-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-        </div>
-        <h3>Decision trail</h3>
-        <p>
-          Every entry is timestamped and changelog-tracked. Why that architecture?
-          Why that financial choice? The reasoning is preserved at the moment you decided.
-        </p>
-        <div class="case-example">
-          <span class="case-you">"Why did we pick Postgres over SQLite last month?"</span>
         </div>
       </div>
     </div>
