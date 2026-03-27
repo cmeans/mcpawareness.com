@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <g transform="translate(16, 16)">
+    <!-- Outer arc -->
+    <path d="M -11 5.5 A 13 13 0 0 1 -11 -5.5" fill="none" stroke="#85B7EB" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+    <!-- Middle arc -->
+    <path d="M -7.5 4 A 9 9 0 0 1 -7.5 -4" fill="none" stroke="#85B7EB" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+    <!-- Inner arc -->
+    <path d="M -4 2.5 A 5 5 0 0 1 -4 -2.5" fill="none" stroke="#85B7EB" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="3" fill="#85B7EB"/>
+  </g>
+</svg>
