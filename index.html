@@ -382,11 +382,16 @@ nav .container {
 .t-number { color: #c4b5fd; }
 
 .briefing-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.briefing-line.js-animated {
   opacity: 0;
   transform: translateY(4px);
 }
 
-.briefing-line.visible {
+.briefing-line.js-animated.visible {
   animation: fadeIn 0.4s ease forwards;
 }
 
@@ -851,14 +856,19 @@ footer a:hover {
   font-size: 0.85rem;
 }
 
-/* -- Scroll reveal -- */
+/* -- Scroll reveal (progressive enhancement — content visible by default) -- */
 .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal.js-reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.reveal.visible {
+.reveal.js-reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1272,13 +1282,16 @@ footer a:hover {
 </footer>
 
 <script>
-// Scroll-triggered reveal for sections
+// Progressive enhancement: add animation classes only after JS loads
+// Content is visible by default; JS adds the hidden state, then reveals on scroll
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('js-reveal'));
+document.querySelectorAll('.briefing-line').forEach(el => el.classList.add('js-animated'));
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
 
-      // Trigger briefing line animation when demo section enters
       if (entry.target.classList.contains('demo')) {
         const lines = entry.target.querySelectorAll('.briefing-line');
         lines.forEach((line, i) => {
