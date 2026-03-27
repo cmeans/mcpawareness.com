@@ -8,44 +8,72 @@
 <path id="streamR2" d="M148,-14 C116,-10 84,-4 64,0" fill="none" stroke="#85B7EB" stroke-width="2" stroke-linecap="round"/>
 <path id="streamR3" d="M138,22 C112,18 84,10 64,2" fill="none" stroke="#85B7EB" stroke-width="1.5" stroke-linecap="round"/>
 
-<!-- Animated dots — left side, moving toward eye -->
-<circle r="2.2" fill="#B5D4F4" opacity="0.8">
-  <animateMotion dur="3s" repeatCount="indefinite" begin="0s">
+<!-- Animated dots — left side, first wave -->
+<circle r="2.2" fill="#B5D4F4">
+  <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s">
     <mpath href="#streamL1"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="2.4s" repeatCount="indefinite" begin="0s"/>
 </circle>
-<circle r="3.8" fill="#85B7EB" opacity="0.8">
-  <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.8s">
+<circle r="3.8" fill="#85B7EB">
+  <animateMotion dur="4.1s" repeatCount="indefinite" begin="1.7s">
     <mpath href="#streamL2"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;1;1;0" dur="3.5s" repeatCount="indefinite" begin="0.8s"/>
+  <animate attributeName="opacity" values="0;1;1;0" dur="4.1s" repeatCount="indefinite" begin="1.7s"/>
 </circle>
-<circle r="2.2" fill="#B5D4F4" opacity="0.8">
-  <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.5s">
+<circle r="2.2" fill="#B5D4F4">
+  <animateMotion dur="2.9s" repeatCount="indefinite" begin="3.4s">
     <mpath href="#streamL3"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="2.9s" repeatCount="indefinite" begin="3.4s"/>
 </circle>
 
-<!-- Animated dots — right side, moving toward eye -->
-<circle r="3.8" fill="#85B7EB" opacity="0.8">
-  <animateMotion dur="3.3s" repeatCount="indefinite" begin="0.3s">
+<!-- Left side, second wave (offset) -->
+<circle r="1.8" fill="#85B7EB">
+  <animateMotion dur="3.7s" repeatCount="indefinite" begin="5.2s">
+    <mpath href="#streamL1"/>
+  </animateMotion>
+  <animate attributeName="opacity" values="0;0.7;0.7;0" dur="3.7s" repeatCount="indefinite" begin="5.2s"/>
+</circle>
+<circle r="2.8" fill="#B5D4F4">
+  <animateMotion dur="2.1s" repeatCount="indefinite" begin="7.8s">
+    <mpath href="#streamL2"/>
+  </animateMotion>
+  <animate attributeName="opacity" values="0;0.85;0.85;0" dur="2.1s" repeatCount="indefinite" begin="7.8s"/>
+</circle>
+
+<!-- Animated dots — right side, first wave -->
+<circle r="3.8" fill="#85B7EB">
+  <animateMotion dur="3.3s" repeatCount="indefinite" begin="0.9s">
     <mpath href="#streamR1"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;1;1;0" dur="3.3s" repeatCount="indefinite" begin="0.3s"/>
+  <animate attributeName="opacity" values="0;1;1;0" dur="3.3s" repeatCount="indefinite" begin="0.9s"/>
 </circle>
-<circle r="3.8" fill="#85B7EB" opacity="0.8">
-  <animateMotion dur="3s" repeatCount="indefinite" begin="1.2s">
+<circle r="3.8" fill="#85B7EB">
+  <animateMotion dur="2.6s" repeatCount="indefinite" begin="4.3s">
     <mpath href="#streamR2"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.2s"/>
+  <animate attributeName="opacity" values="0;1;1;0" dur="2.6s" repeatCount="indefinite" begin="4.3s"/>
 </circle>
-<circle r="2.2" fill="#B5D4F4" opacity="0.8">
-  <animateMotion dur="3.6s" repeatCount="indefinite" begin="0.6s">
+<circle r="2.2" fill="#B5D4F4">
+  <animateMotion dur="4.7s" repeatCount="indefinite" begin="2.1s">
     <mpath href="#streamR3"/>
   </animateMotion>
-  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3.6s" repeatCount="indefinite" begin="0.6s"/>
+  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="4.7s" repeatCount="indefinite" begin="2.1s"/>
+</circle>
+
+<!-- Right side, second wave -->
+<circle r="2.0" fill="#B5D4F4">
+  <animateMotion dur="2.8s" repeatCount="indefinite" begin="6.5s">
+    <mpath href="#streamR1"/>
+  </animateMotion>
+  <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2.8s" repeatCount="indefinite" begin="6.5s"/>
+</circle>
+<circle r="3.2" fill="#85B7EB">
+  <animateMotion dur="3.9s" repeatCount="indefinite" begin="8.6s">
+    <mpath href="#streamR3"/>
+  </animateMotion>
+  <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3.9s" repeatCount="indefinite" begin="8.6s"/>
 </circle>
 
 <!-- Eye outline -->
